@@ -3,18 +3,7 @@ Solutions for AOC 2016 Day 1.
 """
 
 
-from utils.cartography import CardinalDirection, Location2D
-
-
-def main():
-    """
-    Solves AOC 2016 Day 1 Parts 1 and 2, printing out the solutions.
-    """
-    input_data = process_input_file()
-    p1_solution = solve_part1(input_data)
-    print(f"P1 solution - {p1_solution}")
-    p2_solution = solve_part2(input_data)
-    print(f"P2 solution - {p2_solution}")
+from src.utils.cartography import CardinalDirection, Location2D
 
 
 def process_input_file():
@@ -97,7 +86,3 @@ def solve_part2(input_data):
             break
     # Calculate Manhattan distance of end location from origin
     return abs(location.loc_x) + abs(location.loc_y)
-
-
-if __name__ == "__main__":
-    main()
