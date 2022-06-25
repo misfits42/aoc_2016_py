@@ -2,59 +2,8 @@
 Solutions for AOC 2016 Day 1.
 """
 
-from dataclasses import dataclass
-from enum import auto, Enum, unique
 
-
-@dataclass(frozen=True, eq=True)
-class Location2D:
-    """
-    Represents a point location on a two-dimensional plane.
-    """
-    loc_x: int
-    loc_y: int
-
-
-@unique
-class CardinalDirection(Enum):
-    """
-    Represents the four different cardinal directions of: North, East, South and
-    West.
-    """
-    NORTH = auto()
-    EAST = auto()
-    SOUTH = auto()
-    WEST = auto()
-
-    def rotate90_clockwise(self):
-        """
-        Gets the resulting cardinal direction after rotating by 90 degrees in
-        the clockwise direction.
-        """
-        match self:
-            case CardinalDirection.NORTH:
-                return CardinalDirection.EAST
-            case CardinalDirection.EAST:
-                return CardinalDirection.SOUTH
-            case CardinalDirection.SOUTH:
-                return CardinalDirection.WEST
-            case CardinalDirection.WEST:
-                return CardinalDirection.NORTH
-
-    def rotate90_counterclockwise(self):
-        """
-        Gets the resulting cardinal direction after rotating by 90 degrees in
-        the counter-clockwise direction.
-        """
-        match self:
-            case CardinalDirection.NORTH:
-                return CardinalDirection.WEST
-            case CardinalDirection.EAST:
-                return CardinalDirection.NORTH
-            case CardinalDirection.SOUTH:
-                return CardinalDirection.EAST
-            case CardinalDirection.WEST:
-                return CardinalDirection.SOUTH
+from utils.cartography import CardinalDirection, Location2D
 
 
 def main():
