@@ -39,4 +39,28 @@ def solve_part1(input_data):
 
 
 def solve_part2(input_data):
-    return -1
+    """
+    Counts the number of the "IPv7" addresses in the input data that support
+    Super-Secret Listening (SSL), by checking which addresses contain an
+    Area-Broadcast Accessor (ABA) anywhere in the supernet sequences and a
+    Byte Allocation Block (BAB) within the hypernet sequence.
+    """
+    regex_aba_left = re.compile(
+        r"[a-z]*([a-z])([a-z])\1[a-z]*\[[a-z]*\2\1\2[a-z]*\][a-z]*")
+    regex_aba_right = re.compile(
+        r"[a-z]*\[[a-z]*([a-z])([a-z])\1[a-z]*\][a-z]*\2\1\2[a-z]*")
+    valid_count = 0
+    for address in input_data:
+        match_left = regex_aba_left.search(address)
+        match_right = regex_aba_right.search(address)
+        if match_left and match_left.group(1) != match_left.group(2):
+            print(
+                f"match left // {match_left.group(1)}{match_left.group(2)}{match_left.group(1)}")
+            valid_count += 1
+        elif match_right and match_right.group(1) != match_right.group(2):
+            print(
+                f"match right // {match_right.group(1)}{match_right.group(2)}{match_right.group(1)}")
+            valid_count += 1
+        else:
+            print("no match")
+    return valid_count

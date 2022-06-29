@@ -104,10 +104,10 @@ if __name__ == "__main__":
         day_07
     # Main solver methods
     print("==========")
-    solve_day_01()
-    solve_day_02()
-    solve_day_03()
-    solve_day_04()
-    solve_day_05()
-    solve_day_06()
+    # solve_day_01()
+    # solve_day_02()
+    # solve_day_03()
+    # solve_day_04()
+    # solve_day_05()
+    # solve_day_06()
     solve_day_07()
