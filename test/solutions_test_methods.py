@@ -110,13 +110,21 @@ class SolutionsTestMethods(unittest.TestCase):
         solution = day_06.solve_part2(input_data)
         self.assertEqual("lragovly", solution)
 
-    def test_day_07_p2(self):
+    def test_day_07_p1(self):
         """
         Solution test method for AOC 2016 Day 7 Part 1.
         """
         input_data = day_07.process_input_file()
         solution = day_07.solve_part1(input_data)
         self.assertEqual(115, solution)
+
+    def test_day_07_p2(self):
+        """
+        Solution test method for AOC 2016 Day 7 Part 2.
+        """
+        input_data = day_07.process_input_file()
+        solution = day_07.solve_part2(input_data)
+        self.assertEqual(231, solution)
 
 
 if __name__ == "__main__":
