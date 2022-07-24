@@ -34,7 +34,9 @@ class AssembunnyInterpreter:
         Trys to read from the registers using the param (if it is a letter).
         Otherwise returns the integer conversion of the param.
         """
-        if param.isnumeric():
+        if isinstance(param, int):
+            return param
+        elif param.strip("-").isnumeric():
             return int(param)
         return self.registers[param]
 
@@ -61,19 +63,42 @@ class AssembunnyInterpreter:
             instruct = self.instructions[self.program_counter]
             match instruct[0]:
                 case AssembunnyOperation.COPY:
-                    value = self.try_register_read(instruct[1])
-                    self.registers[instruct[2]] = value
+                    if isinstance(instruct[2], str):
+                        value = self.try_register_read(instruct[1])
+                        self.registers[instruct[2]] = value
                 case AssembunnyOperation.INCREASE:
-                    self.registers[instruct[1]] += 1
+                    if isinstance(instruct[1], str):
+                        self.registers[instruct[1]] += 1
                 case AssembunnyOperation.DECREASE:
-                    self.registers[instruct[1]] -= 1
+                    if isinstance(instruct[1], str):
+                        self.registers[instruct[1]] -= 1
                 case AssembunnyOperation.JUMP_NOT_ZERO:
                     value = self.try_register_read(instruct[1])
                     if value != 0:
-                        self.program_counter += int(instruct[2])
+                        self.program_counter += self.try_register_read(instruct[2])
                         self.program_counter -= 1
                 case AssembunnyOperation.TOGGLE:
-                    ()
+                    target_index = self.program_counter + \
+                        self.try_register_read(instruct[1])
+                    if 0 <= target_index < len(self.instructions):
+                        target_instruct = self.instructions[target_index]
+                        match target_instruct[0]:
+                            case AssembunnyOperation.COPY:
+                                target_instruct = (AssembunnyOperation.JUMP_NOT_ZERO,
+                                    target_instruct[1], target_instruct[2])
+                            case AssembunnyOperation.INCREASE:
+                                target_instruct = (AssembunnyOperation.DECREASE,
+                                    target_instruct[1])
+                            case AssembunnyOperation.DECREASE:
+                                target_instruct = (AssembunnyOperation.INCREASE,
+                                    target_instruct[1])
+                            case AssembunnyOperation.JUMP_NOT_ZERO:
+                                target_instruct = (AssembunnyOperation.COPY,
+                                    target_instruct[1], target_instruct[2])
+                            case AssembunnyOperation.TOGGLE:
+                                target_instruct = (AssembunnyOperation.INCREASE,
+                                    target_instruct[1])
+                        self.instructions[target_index] = target_instruct
             self.program_counter += 1
 
     @classmethod
