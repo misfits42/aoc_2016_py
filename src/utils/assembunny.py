@@ -48,7 +48,7 @@ class AssembunnyInterpreter:
 
     def set_register(self, reg, value):
         """
-        Sets teh value of the requested register to the given value.
+        Sets the value of the requested register to the given value.
         """
         old_value = self.registers[reg]
         self.registers[reg] = value
@@ -80,22 +80,23 @@ class AssembunnyInterpreter:
                 case AssembunnyOperation.TOGGLE:
                     target_index = self.program_counter + \
                         self.try_register_read(instruct[1])
+                    # Ignore any toggles targeting index outside instruct space
                     if 0 <= target_index < len(self.instructions):
                         target_instruct = self.instructions[target_index]
                         match target_instruct[0]:
-                            case AssembunnyOperation.COPY:
+                            case AssembunnyOperation.COPY:  # 2-arg
                                 target_instruct = (AssembunnyOperation.JUMP_NOT_ZERO,
                                     target_instruct[1], target_instruct[2])
-                            case AssembunnyOperation.INCREASE:
+                            case AssembunnyOperation.INCREASE:  # 1-arg
                                 target_instruct = (AssembunnyOperation.DECREASE,
                                     target_instruct[1])
-                            case AssembunnyOperation.DECREASE:
+                            case AssembunnyOperation.DECREASE:  # 1-arg
                                 target_instruct = (AssembunnyOperation.INCREASE,
                                     target_instruct[1])
-                            case AssembunnyOperation.JUMP_NOT_ZERO:
+                            case AssembunnyOperation.JUMP_NOT_ZERO: # 2-arg
                                 target_instruct = (AssembunnyOperation.COPY,
                                     target_instruct[1], target_instruct[2])
-                            case AssembunnyOperation.TOGGLE:
+                            case AssembunnyOperation.TOGGLE:    # 1-arg
                                 target_instruct = (AssembunnyOperation.INCREASE,
                                     target_instruct[1])
                         self.instructions[target_index] = target_instruct
@@ -111,7 +112,7 @@ class AssembunnyInterpreter:
         regex_cpy = re.compile(r"^cpy ([abcd]|-?\d+) ([abcd])$")
         regex_inc = re.compile(r"^inc ([abcd])$")
         regex_dec = re.compile(r"^dec ([abcd])$")
-        regex_jnz = re.compile(r"^jnz ([abcd]|-?\d+) (-?\d+)$")
+        regex_jnz = re.compile(r"^jnz ([abcd]|-?\d+) ([abcd]|-?\d+)$")
         regex_tgl = re.compile(r"^tgl ([abcd]|-?\d+)$")
         for line in raw_input.splitlines():
             if len(line := line.strip()) == 0:
