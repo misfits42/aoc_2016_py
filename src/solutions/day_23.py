@@ -20,8 +20,9 @@ def process_input_file():
 def solve_part1(assembunny_interpreter):
     """
     Solves AOC 2016 Day 23 Part 1 // Runs the program in the assembunny code
-    interpreter and returns the value saved to register "a" (the value that
-    should be sent to the safe).
+    interpreter with register "a" initialised to 7 (all others initialised to 0)
+    and returns the value saved to register "a" (the value that should be sent
+    to the safe).
     """
     assembunny_interpreter = deepcopy(assembunny_interpreter)
     assembunny_interpreter.set_register("a", 7)
@@ -29,8 +30,14 @@ def solve_part1(assembunny_interpreter):
     return assembunny_interpreter.get_register("a")
 
 
-def solve_part2(input_data):
+def solve_part2(assembunny_interpreter):
     """
-    Solves AOC 2016 Day 23 Part 2 // ###
+    Solves AOC 2016 Day 23 Part 2 // Runs the program in the assembunny code
+    interpreter with register "a" initialised to 12 (all others initialised to
+    0) and returns the value saved to register "a" (the value that should be
+    sent to the safe).
     """
-    return -1
+    assembunny_interpreter = deepcopy(assembunny_interpreter)
+    assembunny_interpreter.set_register("a", 12)
+    assembunny_interpreter.execute_program()
+    return assembunny_interpreter.get_register("a")
